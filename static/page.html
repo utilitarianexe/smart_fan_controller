@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="spin.js"></script>
+    <script type="text/javascript" src="control.js"></script>
+    <link rel="stylesheet" type="text/css" href="page.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.6-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.6-dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.5.0/css/font-awesome.min.css">
+    <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+    <title> Smart Fan </title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="starter-template">
+	<p id="temp_display">
+	  Current inside temperature: <span id="inside_temp_display"></span> F |
+	  Current outside temperature: <span id="outside_temp_display"></span> F<br>
+	  Fan is in <span id="mode_display"></span> mode |
+	  Fan is <span id="fan_state_display"></span>
+	</p>
+	<button id="refresh_button" onclick="refresh()" class="btn btn-primary">
+	  Refresh <i id="refresh_spinner"</i> 
+	</button>
+	<h1>Smart fan configuration</h1>
+	<p> 
+	  There are 4 simple steps to configure you smart fan controller.<br>
+	  You can come back to this page at any time to change these settings. The settings presist between unplugging and plugging in the device. Note you can not change settings while in automatic mode click the turn fan off mode to allow the settings to be changed again.
+	</p>
+	<h4> 1. Connect your wifi </h4>
+	<p> 
+	  In order to know outside temperature the smart fan controller needs access to the internet. Please enter your wifi information below and then press connect. If someone else connects these will be hidden.
+	</p>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon" id="sizing-addon1">Network name</span>
+	  <input type="text" id="network" class="form-control" aria-describedby="sizing-addon1">
+	</div>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon" id="sizing-addon1">Network Password</span>
+	  <input type="text" id="password" class="form-control" aria-describedby="sizing-addon1">
+	</div>
+
+	<button id="connect_button" onclick="connect()" class="btn btn-primary  form-control">
+	  Connect <i id="connect_spinner"</i> 
+	</button>
+	<h4> 2. Set your location </h4>
+	<p> 
+	  We will also need your current location to get the outside temperatue. Usually this can be done automatically so you don't need to enter anything in the fields below. Your phone might ask your permission to share this. Please accept.<br>
+	  On some devices you may not be able to get your location. You can manually enter it in these cases but give the automatic way a chance first.
+	</p>
+	<h4> Leave the next two fields blank unless the set location button does not work.</h4>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon" id="sizing-addon1">Latitude</span>
+	  <input type="number" id="lat_text_box" class="form-control" aria-describedby="sizing-addon1">
+	</div>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon" id="sizing-addon1">Longitude)</span>
+	  <input type="number" id="lon_text_box" class="form-control" aria-describedby="sizing-addon1">
+	</div>
+
+	<button id="set_location_button" onclick="set_location()" class="btn btn-primary  form-control" disabled="">
+	  Set Location <i id="set_location_spinner"></i> 
+	</button>
+	
+	<br>
+	<h4> 3. Set your temperature preferences </h4>
+	<p>
+	  Set minumum temperatue fan should run at. Normally the fan will run when the outside temperature is lower than the inside temperature. However if it is colder than your preference we do not want the fan to run. You can also set the temperature difference between the inside and outside that activates the fan and the minimum allowable cycle time between on and off states. The defaults should work fine for both of these.
+	</p>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon" id="sizing-addon1">Minimum fahrenheit</span>
+	  <input type="number" id="min_temp_text_box" class="form-control" aria-describedby="sizing-addon1">
+	</div>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon" id="sizing-addon1">Margin fahrenheit: </span>
+	  <input type="number" id="temp_margin_text_box" class="form-control" aria-describedby="sizing-addon1">
+	</div>
+	<div class="input-group input-group-lg">
+	  <span class="input-group-addon" id="sizing-addon1">Minimum cycle time seconds</span>
+	  <input type="number" id="min_cycle_time_text_box" class="form-control" aria-describedby="sizing-addon1">
+	</div>
+	<button id="set_temperature_preferences_button" onclick="set_temperature_preferences()" class="btn btn-primary  form-control" disabled="">
+	  Set Temperature Preferences <i id="set_temperature_preferences_spinner"></i>
+	</button>
+	<h4> Press the next button and your Done </h4>
+	<p>
+	  The following button will remain disabled until the steps above are complete.
+	</p>
+	<button id="turn_automatic_mode_on_button" onclick="turn_automatic_mode_on()" class="btn btn-primary  form-control" disabled="">
+	  Turn automatic mode on <i id="turn_automatic_mode_on_spinner"></i>
+	</button> <br>
+	<p>
+	  The following 2 options also turn automatic mode off but you can turn it on again at any time. Press turn fan off if you need to change any of the other configurations.
+	</p>
+	<button id="turn_fan_on_button" onclick="turn_fan_on()" class="btn btn-primary  form-control">
+	  Turn fan on <i id="turn_fan_on_spinner"></i>
+	</button>
+	<button id="turn_fan_off_button" onclick="turn_fan_off()" class="btn btn-primary  form-control">
+	  Turn fan off <i id="turn_fan_off_spinner"></i>
+	</button>
+	<p>
+	  If you get annoyed with having the smartfan network around. You can turn it off. It will stay off until you unplug and replug your device. This is so you can change the configureation later if needed. The last configuration is always saved even between reboots in any case. This just turns off the ability to configure or connecto to the smartfan network unless you reboot.
+	</p>
+	<button id="turn_off_network_button" onclick="turn_off_network()" class="btn btn-primary  form-control">
+	  Turn off smart fan network(TODO) <i id="turn_off_network_spinner"></i>
+	</button>
+	<button onclick="hard_reset()" class="btn btn-primary  form-control">
+	  Hard Reset
+	</button>
+      </div>
+    </div>
+  </body>
+</html>
+

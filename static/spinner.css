@@ -1,0 +1,82 @@
+@import "compass/css3";
+
+.spinner1 {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: solid 30px;
+  border-radius: 5em;
+  border-color: #0099ff transparent #0099ff transparent;
+  animation: spin 1s linear infinite;
+}
+
+.spinner2 {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: solid 30px;
+  border-radius: 5em;
+  border-color: transparent transparent #0099ff transparent;
+  animation: spin 1s linear infinite;
+}
+
+.dot{
+  &:before,
+  &:after{
+    content: ".";
+  }
+  
+  &{
+    animation: fade 1s linear infinite;
+  }
+  
+  &:after{
+    animation: fade 2s linear infinite;
+  }
+}
+
+@keyframes spin{
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade{
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* styling */
+ html {
+     width: 100%;
+     height: 100%;
+     background: radial-gradient(circle, #fff 0%, #aaa 100%) no-repeat;
+     overflow-x: hidden;
+     overflow-y: hidden;
+}
+body {
+    text-align: center;
+    display: table;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+#wrap {
+    box-sizing: border-box;
+    display: table-cell;
+    vertical-align: middle;
+}
+.item{
+  display: inline-block;
+  padding: 0 5em;
+}

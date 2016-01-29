@@ -1,0 +1,5 @@
+Software to control raspberry pi to control a relay to control a window fan. Uses temperature data from the web and a local sensor to only turn the fan on when it is cooler inside than outside. Code is a bit of a mess at this point but improvements coming. Also a pain to install all the dependencies/configuation files. They are undocumented but you need a very specific network/sever configuration for this to work. I plan on adding that later.
+
+Some of the code may be of use to others though. Particually interesting is how the raspberry pi acts intiallly as a wifi access point for the user to connect to with a smart phone. This enbles them to configure the device with their location using the phones gps and their own wifi user name and password. The raspberry pi then uses those two  peices of information to get outside temperature. I imagine this might be useful to someone else building IOT this devices that they want to distribute to non technical users without needing to get an app in an app store.
+
+Let me know if you find any use for this.
