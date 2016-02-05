@@ -12,7 +12,7 @@ import config
 import datetime
 import hardware
 from sensor import sensor
-import outside_data
+from outside_data import outside_data
 import networking
 from profile import profile
 
@@ -21,15 +21,16 @@ from profile import profile
 '''
 network_test_info = 'not_done'
 application = Flask(__name__, static_url_path='')
-application.debug = False
+application.debug = True
 hardware = hardware.Hardware(profile)
 lock = threading.Lock()
 
 def update_data():
     profile.inside_temp = str(sensor.get_inside_temp())    
     if profile.lon is not None and profile.lat is not None and profile.connect_button['active']:
-        #TODO excepiton
-        profile.outside_temp = str(outside_data.get_outside_temp(profile.lat, profile.lon))
+        temp, error = outside_data.get_outside_temp(profile.lat, profile.lon)
+        profile.weather_api_error = error
+        profile.outside_temp = str(temp)
         if profile.set_temperature_preferences_button['active'] and not profile.turn_automatic_mode_on_button['active']:
             profile.turn_automatic_mode_on_button['disabled'] = False
 
@@ -92,6 +93,12 @@ def network_status():
     status = get_status()
     return status
 
+@application.route("/turn_off_network")
+def turn_off_network():
+    status = get_status()
+    error = networking.turn_off_access_point()
+    return error
+
 @application.route("/turn_fan_on")
 def turn_fan_on():
     lock.acquire()
@@ -153,18 +160,13 @@ def run_automatic_mode():
     '''
     while True:
         lock.acquire()
-        lat = profile.lat
-        lon = profile.lon
         if not profile.turn_automatic_mode_on_button['active']:
             lock.release()
             break
-        try:
-            outside_temp = outside_data.get_outside_temp(lat, lon)
-            inside_temp = sensor.get_inside_temp()
-        except:
-            turn_fan_off()
-            lock.release()
-            break
+
+        outside_temp, error = outside_data.get_outside_temp(profile.lat, profile.lon)
+        profile.weather_api_error = error
+        inside_temp = sensor.get_inside_temp()
         inside_temp = float(inside_temp)
         outside_temp = float(outside_temp)
         if config.record_temp:

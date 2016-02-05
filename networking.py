@@ -95,6 +95,16 @@ def use_access_point():
     print('after waiting 20 seconds if config still claims wlan1 is not working giving up')
     return False
 
+def turn_off_access_point():
+    p =  subprocess.Popen(['/sbin/ifdown "wlan0"'], shell=True)
+    exit_status = p.wait()
+    if exit_status != 0:
+        error = 'failed to turn off access point'
+        print(error)
+        return error
+    return None
+    
+
 def become_access_point():
     '''
     not currently used
