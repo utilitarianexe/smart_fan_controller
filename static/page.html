@@ -21,12 +21,12 @@
 	  Fan is <span id="fan_state_display"></span>
 	</p>
 	<button id="refresh_button" onclick="refresh()" class="btn btn-primary">
-	  Refresh <i id="refresh_spinner"</i> 
+	  Refresh <i id="refresh_spinner"></i> 
 	</button>
 	<h1>Smart fan configuration</h1>
+	<h4> There are 4 simple steps to configure your smart fan controller.</h4>
 	<p> 
-	  There are 4 simple steps to configure you smart fan controller.<br>
-	  You can come back to this page at any time to change these settings. The settings presist between unplugging and plugging in the device. Note you can not change settings while in automatic mode click the turn fan off mode to allow the settings to be changed again.
+	  You can come back to this page at any time to change these settings. The settings presist between unplugging and plugging in the device. You can not change settings while in automatic mode click the turn fan off mode to allow the settings to be changed again.
 	</p>
 	<h4> 1. Connect your wifi </h4>
 	<p> 
@@ -34,34 +34,34 @@
 	</p>
 	<div class="input-group input-group-lg">
 	  <span class="input-group-addon" id="sizing-addon1">Network name</span>
-	  <input type="text" id="network" class="form-control" aria-describedby="sizing-addon1">
+	  <input type="text" id="network" class="form-control" aria-describedby="sizing-addon1" autocorrect="off" autocapitalize="none">
 	</div>
 	<div class="input-group input-group-lg">
 	  <span class="input-group-addon" id="sizing-addon1">Network Password</span>
-	  <input type="text" id="password" class="form-control" aria-describedby="sizing-addon1">
+	  <input type="text" id="password" class="form-control" aria-describedby="sizing-addon1" autocorrect="off" autocapitalize="none">
 	</div>
 
 	<button id="connect_button" onclick="connect()" class="btn btn-primary  form-control">
-	  Connect <i id="connect_spinner"</i> 
+	  Connect <i id="connect_spinner"></i> 
 	</button>
 	<h4> 2. Set your location </h4>
 	<p> 
 	  We will also need your current location to get the outside temperatue. Usually this can be done automatically so you don't need to enter anything in the fields below. Your phone might ask your permission to share this. Please accept.<br>
 	  On some devices you may not be able to get your location. You can manually enter it in these cases but give the automatic way a chance first.
 	</p>
+	<button id="set_location_button" onclick="set_location()" class="btn btn-primary  form-control" disabled="">
+	  Set Location <i id="set_location_spinner"></i> 
+	</button>
 	<h4> Leave the next two fields blank unless the set location button does not work.</h4>
 	<div class="input-group input-group-lg">
 	  <span class="input-group-addon" id="sizing-addon1">Latitude</span>
 	  <input type="number" id="lat_text_box" class="form-control" aria-describedby="sizing-addon1">
 	</div>
 	<div class="input-group input-group-lg">
-	  <span class="input-group-addon" id="sizing-addon1">Longitude)</span>
+	  <span class="input-group-addon" id="sizing-addon1">Longitude</span>
 	  <input type="number" id="lon_text_box" class="form-control" aria-describedby="sizing-addon1">
 	</div>
 
-	<button id="set_location_button" onclick="set_location()" class="btn btn-primary  form-control" disabled="">
-	  Set Location <i id="set_location_spinner"></i> 
-	</button>
 	
 	<br>
 	<h4> 3. Set your temperature preferences </h4>
@@ -89,7 +89,8 @@
 	</p>
 	<button id="turn_automatic_mode_on_button" onclick="turn_automatic_mode_on()" class="btn btn-primary  form-control" disabled="">
 	  Turn automatic mode on <i id="turn_automatic_mode_on_spinner"></i>
-	</button> <br>
+	</button>
+	<h4> Extras </h4>
 	<p>
 	  The following 2 options also turn automatic mode off but you can turn it on again at any time. Press turn fan off if you need to change any of the other configurations.
 	</p>
@@ -100,13 +101,13 @@
 	  Turn fan off <i id="turn_fan_off_spinner"></i>
 	</button>
 	<p>
-	  If you get annoyed with having the smartfan network around. You can turn it off. It will stay off until you unplug and replug your device. This is so you can change the configureation later if needed. The last configuration is always saved even between reboots in any case. This just turns off the ability to configure or connecto to the smartfan network unless you reboot.
+	  If you get annoyed with having the smartfan network around. You can turn it off. It will stay off until you unplug and replug your device. This is so you can change the configureation later if needed. The last configuration is always saved even between reboots in any case. This just turns off the ability to configure or connect to the smartfan network unless you reboot. Note this page will simply stop working after you press the button unless you unplug and replug the controller. 
 	</p>
 	<button id="turn_off_network_button" onclick="turn_off_network()" class="btn btn-primary  form-control">
-	  Turn off smart fan network(TODO) <i id="turn_off_network_spinner"></i>
+	  Turn off smart fan network <i id="turn_off_network_spinner"></i>
 	</button>
-	<button onclick="hard_reset()" class="btn btn-primary  form-control">
-	  Hard Reset
+	<button id="hard_reset_button" onclick="hard_reset()" class="btn btn-primary  form-control">
+	  Hard Reset <i id="hard_reset_spinner"></i>
 	</button>
       </div>
     </div>

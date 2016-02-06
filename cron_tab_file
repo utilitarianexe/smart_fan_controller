@@ -1,0 +1,1 @@
+@reboot sleep 60 && /home/pi/smart_fan/run.sh >> /var/log/myjob.log 2>&1

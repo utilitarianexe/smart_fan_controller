@@ -2,7 +2,6 @@ var version = 2;
 var max_network_checks = 6;
 var network_checks = 0;
 var finished_test;
-var test_mode = true; //will get fake location info if can not find any for help testing
 
 document.addEventListener('DOMContentLoaded',
 			  function() {
@@ -12,17 +11,6 @@ document.addEventListener('DOMContentLoaded',
 
 function start_function(){
     $.ajax({url: "http://smartfan.net/get_status",
-	    method: "GET",
-	    success: handleStatus,
-	    error: error_func,
-	    dataType: 'json',
-	    async: true
-	   }
-	  );
-}
-
-function hard_reset(){
-    $.ajax({url: "http://smartfan.net/hard_reset",
 	    method: "GET",
 	    success: handleStatus,
 	    error: error_func,
@@ -47,9 +35,15 @@ function handleStatus(status){
     set_button_status('set_location', status['set_location_button']);
     set_button_status('set_temperature_preferences', status['set_temperature_preferences_button']);
     set_button_status('turn_automatic_mode_on', status['turn_automatic_mode_on_button']);
+    set_button_status('hard_reset', status['hard_reset_button']);
     set_button_status('turn_fan_on', status['turn_fan_on_button']);
     set_button_status('turn_fan_off', status['turn_fan_off_button']);
     set_button_status('turn_off_network', status['turn_off_network_button']);
+    if(status['weather_api_error'] !== 'unknown'){
+	console.log(status['weather_api_error']);
+	alert(status['weather_api_error']);
+	alert('There was some kind of error with the weather api using last known temp for all operations hopefully the service will be online again soon. I use forcast io for this purpose');
+    }
 }
 
 function display_info(message, element_id){
@@ -106,6 +100,30 @@ function refresh(){
 	    async: true,
 	    success: handleStatus,
 	    dataType: 'json',
+	   }
+	  );
+}
+
+function turn_off_network(){
+    turn_on_spinner('turn_off_network');
+    $.ajax({url: "http://smartfan.net/turn_off_network",
+	    method: "GET",
+	    success: handleStatus,
+	    error: error_func,
+	    dataType: 'json',
+	    async: true
+	   }
+	  );
+}
+
+function hard_reset(){
+    turn_on_spinner('hard_reset');
+    $.ajax({url: "http://smartfan.net/hard_reset",
+	    method: "GET",
+	    success: handleStatus,
+	    error: error_func,
+	    dataType: 'json',
+	    async: true
 	   }
 	  );
 }
@@ -201,22 +219,6 @@ function errorPostion(error) {
     turn_off_spinner('set_location');
     var button = document.getElementById('set_location_button');
     button.disabled = false;
-
-    // var geo_display = document.getElementById("geo_display");
-    // switch(error.code) {
-    //     case error.PERMISSION_DENIED:
-    //         geo_display.innerHTML = "You denied the request for you loction. Try again but accept it.";
-    //         break;
-    //     case error.POSITION_UNAVAILABLE:
-    //         geo_display.innerHTML = "Location information is unavailable. Make sure to use a phone not a desktop computer for this";
-    //         break;
-    //     case error.TIMEOUT:
-    //         geo_display.innerHTML = "The request to get user location timed out. Try again.";
-    //         break;
-    //     case error.UNKNOWN_ERROR:
-    //         geo_display.innerHTML = "An unknown error occurred. Try again";
-    //         break;
-    // }
 }
 
 function connect() {
@@ -257,9 +259,24 @@ function parse_test_complete(status_info){
     }
 }
 
-function error_func(obj, call_error, server_error){
-    //TODO
-    alert("error I see");
+function error_func(jqXHR, exception, server_error){
+    var msg = '';
+    if (jqXHR.status === 0) {
+	msg = 'Looks like you turned the network off. If you need to configure again unplug and replug in the controller. Then reconnect to the smartfan network.';
+    } else if (jqXHR.status == 404) {
+	msg = '404 error. Something failed. Unplug and replug in the controller. Disconnect from the smartfan network. Then reconnect to the smartfan network.';
+    } else if (jqXHR.status == 500) {
+	msg = '500 error. Something failed. Unplug and replug in the controller. Disconnect from the smartfan network. Then reconnect to the smartfan network.';
+    } else if (exception === 'parsererror') {
+	msg = 'JSON parse failed. Something failed. Unplug and replug in the controller. Disconnect from the smartfan network. Then reconnect to the smartfan network.';
+    } else if (exception === 'timeout') {
+	msg = 'Time out error. Something failed. Unplug and replug in the controller. Disconnect from the smartfan network. Then reconnect to the smartfan network.';
+    } else if (exception === 'abort') {
+	msg = 'Ajax request aborted. Something failed. Unplug and replug in the controller. Disconnect from the smartfan network. Then reconnect to the smartfan network.';
+    } else {
+	msg = 'Uncaught Error. Something failed. Unplug and replug in the controller. Disconnect from the smartfan network. Then reconnect to the smartfan network.' + jqXHR.responseText;
+    }
+    alert(msg);
 }
 
 function wait_for_test_to_complete_helper(info){
