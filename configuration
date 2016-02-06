@@ -1,0 +1,27 @@
+need to run the rasp config to make more space
+drivers for temp sensor
+pip
+python-dev
+nginix
+dnsmasq
+hostapd
+sudo hostapd -B /etc/hostapd/hostapd.conf
+pip install uwsgi flask
+sudo pip install python-forecastio
+
+move files to following places
+/etc/dnsmasq.config
+/etc/nginx/nginx.conf
+/etc/network/interfaces
+/etc/wpa_supplicant/wpa_supplicant.conf to
+sudo crontab -e
+add
+@reboot sleep 60 && /home/pi/smart_fan/run.sh >> /var/log/myjob.log 2>&1
+
+
+you will also need a keys.py file with your weather api keys
+
+finally you will need to download and add
+static/bootstrap-3.3.6-dist/   
+static/font-awesome-4.5.0/
+static/font-awesome.css
